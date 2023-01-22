@@ -1,5 +1,7 @@
-public class Main {
+public class EchoServerMain {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+        EchoServer echoServer=new EchoServer();
+        echoServer.establish();
     }
 }
