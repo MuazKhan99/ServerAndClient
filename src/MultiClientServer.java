@@ -7,9 +7,9 @@ public class MultiClientServer extends Thread
     public void run() {
         ServerSocket serverSocket = null;
         try {
-            serverSocket= new ServerSocket(2345);
+            serverSocket= new ServerSocket(8888);
         }catch (IOException e) {
-            System.out.println("Could not listen on port: 2345");
+            System.out.println("Could not listen on port: 8888");
             System.exit(-1);
         }
 
@@ -21,7 +21,7 @@ public class MultiClientServer extends Thread
 
                 server.start();
             } catch (IOException e) {
-                System.out.println("Accept failed:2345");
+                System.out.println("Accept failed:8888");
                 System.exit(-1);
             }
         }}}

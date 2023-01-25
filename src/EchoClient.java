@@ -9,7 +9,7 @@ public class EchoClient {
         PrintWriter out = null;
         BufferedReader in = null;
         try {
-            echoSocket = new Socket(InetAddress.getLocalHost(), 1234);
+            echoSocket = new Socket(InetAddress.getLocalHost(), 8888);
             out = new PrintWriter(echoSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(
                     echoSocket.getInputStream()));

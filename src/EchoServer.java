@@ -9,16 +9,16 @@ public class EchoServer {
     public void establish() {
         ServerSocket serverSocket = null;
         try {
-            serverSocket= new ServerSocket(1234);
+            serverSocket= new ServerSocket(8888);
         }catch (IOException e) {
-            System.out.println("Could not listen on port: 1234");
+            System.out.println("Could not listen on port: 8888");
             System.exit(-1);
         }
         Socket clientSocket = null;
         try {
             clientSocket = serverSocket.accept();
         }catch (IOException e) {
-            System.out.println("Accept failed: 1234");
+            System.out.println("Accept failed: 8888");
             System.exit(-1);
         }
         PrintWriter out=null;
