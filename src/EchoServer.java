@@ -21,27 +21,26 @@ public class EchoServer {
             System.out.println("Accept failed: 8888");
             System.exit(-1);
         }
-        PrintWriter out=null;
-        BufferedReader in = null;
+        ObjectOutputStream out=null;
+        ObjectInputStream in = null;
         try {
-            out = new PrintWriter(
-                    clientSocket.getOutputStream(), true);
-            in = new BufferedReader(
-                    new InputStreamReader(
-                            clientSocket.getInputStream()));
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
         }catch (IOException ioe) {
             System.out.println("Failed in creating streams");
             System.exit(-1);
         }
-        String inputLine, outputLine;
+        PersistentTime time;
         try {
-            while ((inputLine = in.readLine()) != null) {
-                out.println(inputLine);
-                if (inputLine.equals("Bye."))
-                    break;
-            }
+            time = (PersistentTime) in.readObject();
+            System.out.println("Time received from client: " + time.getTime());
+            out.writeObject(time);
+            out.flush();
         }catch (IOException ioe) {
-            System.out.println("Failed in reading, writing");
+            System.out.println("Failed in reading or writing object");
+            System.exit(-1);
+        } catch (ClassNotFoundException e) {
+            System.out.println("Failed in casting object");
             System.exit(-1);
         }
         try {
@@ -50,5 +49,6 @@ public class EchoServer {
         }catch (IOException e) {
             System.out.println("Could not close");
             System.exit(-1);
-        }}}
- 
+        }
+    }
+}

@@ -7,7 +7,7 @@ public class MultiClientServer extends Thread
     public void run() {
         ServerSocket serverSocket = null;
         try {
-            serverSocket= new ServerSocket(8888);
+            serverSocket= new ServerSocket(8888, 0, InetAddress.getByName("192.168.1.150"));
         }catch (IOException e) {
             System.out.println("Could not listen on port: 8888");
             System.exit(-1);

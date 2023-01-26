@@ -1,18 +1,19 @@
 import java.io.*;
 import java.net.*;
 
+
 public class EchoClient {
     public EchoClient() {
     }
+
     public void establish() {
         Socket echoSocket = null;
-        PrintWriter out = null;
-        BufferedReader in = null;
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
         try {
             echoSocket = new Socket(InetAddress.getLocalHost(), 8888);
-            out = new PrintWriter(echoSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(
-                    echoSocket.getInputStream()));
+            out = new ObjectOutputStream(echoSocket.getOutputStream());
+            in = new ObjectInputStream(echoSocket.getInputStream());
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host.");
             System.exit(1);
@@ -20,26 +21,24 @@ public class EchoClient {
             System.err.println("Couldn't get I/O");
             System.exit(1);
         }
-        BufferedReader stdIn = new BufferedReader( new
-                InputStreamReader(System.in));
+        try {
+            PersistentTime time = new PersistentTime();
+            out.writeObject(time);
+            out.flush();
+            System.out.println("Time sent to server: " + time.getTime());
+            time = (PersistentTime) in.readObject();
+            System.out.println("Time received from server: " + time.getTime());
 
-        String userInput;
-
-        try{
-            while ((userInput = stdIn.readLine()) != null) {
-                out.println(userInput);
-                if (userInput.equals("Bye."))
-                    break;
-                System.out.println("echo: " + in.readLine());
-            }
             out.close();
             in.close();
-            stdIn.close();
             echoSocket.close();
         } catch (IOException ioe) {
             System.out.println("Failed");
             System.exit(-1);
-        }}}
- 
- 
- 
+        } catch (ClassNotFoundException cnfe) {
+            System.out.println("Failed, class not found");
+            System.exit(-1);
+        }
+    }
+}
+
